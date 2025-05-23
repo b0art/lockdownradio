@@ -25,6 +25,13 @@ def have_shared_interest(profile1: 'UserProfile', profile2: 'UserProfile') -> bo
             return True
     return False
 
+def are_ages_compatible(profile1: 'UserProfile', profile2: 'UserProfile', max_age_difference: int) -> bool:
+    """
+    Checks if the age difference between two user profiles is within a specified limit.
+    """
+    age_diff = abs(profile1.age - profile2.age)
+    return age_diff <= max_age_difference
+
 if __name__ == "__main__":
     # Create an instance of UserProfile
     user_profile = UserProfile(
@@ -87,3 +94,50 @@ if __name__ == "__main__":
     print(f"\nProfile A ({profile1.user_id}) Interests: {profile1.interests}")
     print(f"Profile C ({profile3_no_match.user_id}) Interests: {profile3_no_match.interests}")
     print(f"Do Profile A and Profile C share an interest? -> {shared_no_match_result}")
+
+    # --- Age Compatibility Test ---
+    print("\n--- Age Compatibility Test ---")
+    sample_max_age_difference = 5
+
+    # Create User Profiles for testing age compatibility
+    profile_age_test1 = UserProfile(
+        user_id="age_test_user1",
+        first_name="AgeTest1",
+        age=30,
+        bio="Bio for AgeTest1",
+        interests=["cinema", "board games"],
+        photo_urls=[]
+    )
+
+    profile_age_test2_compatible = UserProfile(
+        user_id="age_test_user2_compatible",
+        first_name="AgeTest2Compatible",
+        age=33,
+        bio="Bio for AgeTest2Compatible",
+        interests=["reading"],
+        photo_urls=[]
+    )
+
+    profile_age_test3_incompatible = UserProfile(
+        user_id="age_test_user3_incompatible",
+        first_name="AgeTest3Incompatible",
+        age=40,
+        bio="Bio for AgeTest3Incompatible",
+        interests=["gardening"],
+        photo_urls=[]
+    )
+
+    # Test are_ages_compatible function
+    compatible_result = are_ages_compatible(profile_age_test1, profile_age_test2_compatible, sample_max_age_difference)
+    incompatible_result = are_ages_compatible(profile_age_test1, profile_age_test3_incompatible, sample_max_age_difference)
+
+    # Print results clearly
+    print(f"Profile X ({profile_age_test1.user_id}) Age: {profile_age_test1.age}")
+    print(f"Profile Y ({profile_age_test2_compatible.user_id}) Age: {profile_age_test2_compatible.age}")
+    print(f"Max Allowed Age Difference: {sample_max_age_difference}")
+    print(f"Are Profile X and Y ages compatible? -> {compatible_result}")
+
+    print(f"\nProfile X ({profile_age_test1.user_id}) Age: {profile_age_test1.age}")
+    print(f"Profile Z ({profile_age_test3_incompatible.user_id}) Age: {profile_age_test3_incompatible.age}")
+    print(f"Max Allowed Age Difference: {sample_max_age_difference}")
+    print(f"Are Profile X and Z ages compatible? -> {incompatible_result}")
